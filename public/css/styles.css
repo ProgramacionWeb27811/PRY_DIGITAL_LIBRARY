@@ -1,0 +1,87 @@
+body {
+    background: #0b1220;
+}
+.app-bg {
+    background: radial-gradient(1200px circle at 10% 10%, rgba(13,110,253,.25), transparent 40%),
+                radial-gradient(900px circle at 90% 20%, rgba(25,135,84,.20), transparent 45%),
+                radial-gradient(900px circle at 50% 100%, rgba(111,66,193,.20), transparent 45%),
+                #0b1220;
+    min-height: 100vh;
+}
+.glass {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(10px);
+}
+.text-soft {
+    color: rgba(255,255,255,.75);
+}
+.badge-soft {
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.12);
+    color: rgba(255,255,255,.85);
+}
+.shadow-soft {
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+.card-hover {
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+.card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(0,0,0,.45);
+}
+.cover {
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, rgba(13,110,253,.35), rgba(111,66,193,.35));
+    display: grid;
+    place-items: center;
+    border-radius: .75rem;
+    border: 1px solid rgba(255,255,255,.12);
+}
+.cover span {
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: rgba(255,255,255,.9);
+}
+.btn-soft {
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.9);
+}
+.btn-soft:hover {
+    background: rgba(255,255,255,.16);
+    border-color: rgba(255,255,255,.22);
+}
+.form-control, .form-select {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.14);
+    color: rgba(255,255,255,.9);
+}
+.form-control::placeholder {
+    color: rgba(255,255,255,.55);
+}
+.form-control:focus, .form-select:focus {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(13,110,253,.55);
+    box-shadow: 0 0 0 .25rem rgba(13,110,253,.15);
+    color: rgba(255,255,255,.95);
+}
+.dropdown-menu {
+    background: #0f1730;
+    border: 1px solid rgba(255,255,255,.12);
+}
+.dropdown-item {
+    color: rgba(255,255,255,.85);
+}
+.dropdown-item:hover {
+    background: rgba(255,255,255,.08);
+    color: rgba(255,255,255,.95);
+}
+.table {
+    color: rgba(255,255,255,.85);
+}
+.divider {
+    height: 1px;
+    background: rgba(255,255,255,.12);
+}
