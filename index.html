@@ -4,10 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Biblioteca - El Saber es Poder</title>
-
-    <!-- Bootstrap CSS -->
     <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="./public/css/styles.css">
 </head>
 
@@ -40,7 +37,7 @@
                         </ul>
                     </li>
                     <li class="nav-item ms-lg-2">
-                        <button class="btn btn-soft px-3" data-bs-toggle="modal" data-bs-target="#modalLogin">
+                        <button class="btn btn-soft px-3" data-bs-toggle="modal" data-bs-target="#modalLogin" hidden>
                             Ingresar
                         </button>
                     </li>
@@ -62,10 +59,6 @@
                         </div>
 
                         <h1 class="display-6 fw-bold mb-2">Biblioteca Digital</h1>
-                        <p class="text-soft mb-4">
-                            Interfaz clara para buscar, filtrar y visualizar libros. Lista para conectar con tu lógica en JavaScript
-                            (fetch, arrays, localStorage o API).
-                        </p>
 
                         <div class="row g-2">
                             <div class="col-md-7">
@@ -315,56 +308,6 @@
                 </div>
             </div>
 
-            <!-- Tabla opcional -->
-            <div class="mt-4 glass rounded-4 p-3 p-lg-4">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div>
-                        <h3 class="h6 fw-bold mb-1">Resumen</h3>
-                        <p class="text-soft small mb-0">Vista tipo tabla para administración (opcional).</p>
-                    </div>
-                    <button class="btn btn-soft btn-sm">Exportar</button>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table table-sm align-middle mb-0">
-                        <thead>
-                            <tr class="text-soft">
-                                <th>Título</th>
-                                <th>Autor</th>
-                                <th>Categoría</th>
-                                <th class="text-end">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>JavaScript Profesional</td>
-                                <td>Nicholas C. Zakas</td>
-                                <td><span class="badge badge-soft">Programación</span></td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalle">Ver</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Optimización en PostgreSQL</td>
-                                <td>Guía práctica</td>
-                                <td><span class="badge badge-soft">Base de Datos</span></td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalle">Ver</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Bootstrap UI</td>
-                                <td>Componentes & Layout</td>
-                                <td><span class="badge badge-soft">Interfaz</span></td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalle">Ver</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <!-- CATEGORIAS -->
             <section id="categorias" class="pt-4">
                 <div class="d-flex justify-content-between align-items-end gap-2 mb-3">
@@ -434,7 +377,7 @@
                 </div>
                 <div class="d-flex gap-2">
                     <a class="btn btn-sm btn-soft" href="#inicio">Ir arriba</a>
-                    <button class="btn btn-sm btn-soft" data-bs-toggle="modal" data-bs-target="#modalLogin">Ingresar</button>
+                    <button class="btn btn-sm btn-soft" data-bs-toggle="modal" data-bs-target="#modalLogin" hidden>Ingresar</button>
                 </div>
             </div>
         </div>
@@ -522,7 +465,7 @@
         </div>
     </div>
 
-    <!-- MODAL LOGIN -->
+    <!-- MODAL LOGIN
     <div class="modal fade" id="modalLogin" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content glass text-white border-0 rounded-4">
@@ -546,7 +489,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
