@@ -1,3 +1,5 @@
+const DB_URL = 'https://fdlrjsqrqtnpbgsjgohn.supabase.co/rest/v1/';
+
 document.getElementById("anio").textContent = new Date().getFullYear();
 
 const txtBuscar = document.getElementById("txtBuscar");
@@ -26,4 +28,4 @@ document.getElementById("btnGuardarLibro").addEventListener("click", () => {
     }
 
     alert(`Libro guardado (demo): ${t} - ${a} [${c}]`);
-});
+});  

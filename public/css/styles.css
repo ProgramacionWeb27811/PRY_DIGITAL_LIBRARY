@@ -85,3 +85,29 @@ body {
     height: 1px;
     background: rgba(255,255,255,.12);
 }
+
+/* Variables opcionales para mantener consistencia con tu tema */
+:root{
+    --select-bg: #1f2a38;      /* ajusta a tu tono */
+    --select-text: #e8eef7;    /* texto claro */
+    --select-border: #334155;  /* borde */
+    --select-focus: rgba(59, 130, 246, 0.35);
+}
+
+.form-select{
+    background-color: var(--select-bg);
+    color: var(--select-text);
+    border-color: var(--select-border);
+}
+
+/* Estado focus (cuando haces click) */
+.form-select:focus{
+    border-color: var(--select-border);
+    box-shadow: 0 0 0 0.25rem var(--select-focus);
+}
+
+/* MUY IMPORTANTE: estilo del desplegable */
+.form-select option{
+    background-color: var(--select-bg);
+    color: var(--select-text);
+}

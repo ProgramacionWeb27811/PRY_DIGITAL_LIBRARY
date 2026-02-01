@@ -30,7 +30,7 @@
                             Acciones
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregar">Agregar libro</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregar" hidden>Agregar libro</a></li>
                             <li><a class="dropdown-item" href="#catalogo">Ver catálogo</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Configuración</a></li>
@@ -64,85 +64,54 @@
                             <div class="col-md-7">
                                 <input id="txtBuscar" class="form-control form-control-lg" type="text" placeholder="Buscar por título, autor o categoría...">
                             </div>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Acciones
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregar" hidden>Agregar libro</a></li>
+                                <li><a class="dropdown-item" href="#catalogo">Ver catálogo</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Configuración</a></li>
+                            </ul>
+
                             <div class="col-md-5">
+                                
                                 <select id="selCategoria" class="form-select form-select-lg">
-                                    <option value="">Todas las categorías</option>
-                                    <option>Programación</option>
-                                    <option>Base de Datos</option>
-                                    <option>Redes</option>
-                                    <option>Matemáticas</option>
+                                    <option selected>Todas las categorías</option>
+                                    <option value="">Programación</option>
+                                    <option value="">Base de Datos</option>
+                                    <option value="">Redes</option>
+                                    <option value="">Matemáticas</option>
                                 </select>
                             </div>
                             <div class="col-12 d-flex flex-wrap gap-2 mt-2">
                                 <button id="btnBuscar" class="btn btn-primary btn-lg px-4">Buscar</button>
                                 <button id="btnLimpiar" class="btn btn-soft btn-lg px-4">Limpiar</button>
-                                <button class="btn btn-success btn-lg px-4" data-bs-toggle="modal" data-bs-target="#modalAgregar">Agregar</button>
+                                <button class="btn btn-success btn-lg px-4" data-bs-toggle="modal" data-bs-target="#modalAgregar" hidden>Agregar</button>
                             </div>
                         </div>
 
                         <div class="divider my-4"></div>
 
                         <div class="row text-center g-3">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="glass rounded-4 p-3">
                                     <div class="fw-bold fs-4" id="statTotal">24</div>
                                     <div class="text-soft small">Libros</div>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="glass rounded-4 p-3">
                                     <div class="fw-bold fs-4" id="statCategorias">6</div>
                                     <div class="text-soft small">Categorías</div>
                                 </div>
                             </div>
-                            <div class="col-4">
-                                <div class="glass rounded-4 p-3">
-                                    <div class="fw-bold fs-4" id="statFav">3</div>
-                                    <div class="text-soft small">Favoritos</div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-5">
-                    <div class="glass rounded-4 p-4 shadow-soft">
-                        <h5 class="fw-bold mb-3">Actividad reciente</h5>
-
-                        <div class="d-flex gap-3 align-items-start mb-3">
-                            <div class="cover flex-shrink-0" style="width: 84px;">
-                                <span>JS</span>
-                            </div>
-                            <div>
-                                <div class="fw-semibold">JavaScript Profesional</div>
-                                <div class="text-soft small">Añadido hace 2 horas • Programación</div>
-                                <button class="btn btn-sm btn-soft mt-2" data-bs-toggle="modal" data-bs-target="#modalDetalle">Ver detalle</button>
-                            </div>
-                        </div>
-
-                        <div class="d-flex gap-3 align-items-start mb-3">
-                            <div class="cover flex-shrink-0" style="width: 84px; background: linear-gradient(135deg, rgba(25,135,84,.35), rgba(13,202,240,.25));">
-                                <span>SQL</span>
-                            </div>
-                            <div>
-                                <div class="fw-semibold">PostgreSQL: Consultas y Optimización</div>
-                                <div class="text-soft small">Actualizado ayer • Base de Datos</div>
-                                <button class="btn btn-sm btn-soft mt-2" data-bs-toggle="modal" data-bs-target="#modalDetalle">Ver detalle</button>
-                            </div>
-                        </div>
-
-                        <div class="d-flex gap-3 align-items-start">
-                            <div class="cover flex-shrink-0" style="width: 84px; background: linear-gradient(135deg, rgba(255,193,7,.25), rgba(220,53,69,.22));">
-                                <span>WEB</span>
-                            </div>
-                            <div>
-                                <div class="fw-semibold">Bootstrap: Componentes y Layout</div>
-                                <div class="text-soft small">Recomendado • Interfaz</div>
-                                <button class="btn btn-sm btn-soft mt-2" data-bs-toggle="modal" data-bs-target="#modalDetalle">Ver detalle</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </header>
@@ -161,8 +130,9 @@
                         <option value="reciente">Orden: más reciente</option>
                         <option value="titulo">Orden: título (A-Z)</option>
                         <option value="autor">Orden: autor (A-Z)</option>
+                        <option value="titulo">Orden: título (Z-A)</option>
+                        <option value="autor">Orden: autor (Z-A)</option>
                     </select>
-                    <button class="btn btn-soft" id="btnFavoritos">Ver favoritos</button>
                 </div>
             </div>
 
