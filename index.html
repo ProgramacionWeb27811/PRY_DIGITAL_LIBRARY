@@ -4,19 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Biblioteca - El Saber es Poder</title>
-    <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./public/css/styles.css">
 </head>
 
 <body class="app-bg text-white">
-    <!-- NAVBAR -->
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="notificacionesContainer" style="z-index: 1055;">
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-dark py-3">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#">
                 <span class="me-2">📚</span>PRY Digital Library
             </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -24,445 +26,87 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                     <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#categorias">Categorías</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Acciones
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregar" hidden>Agregar libro</a></li>
-                            <li><a class="dropdown-item" href="#catalogo">Ver catálogo</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Configuración</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item ms-lg-2">
-                        <button class="btn btn-soft px-3" data-bs-toggle="modal" data-bs-target="#modalLogin" hidden>
-                            Ingresar
-                        </button>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#mis-prestamos">Mis Préstamos</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- HERO -->
     <header id="inicio" class="py-4 py-lg-5">
         <div class="container">
             <div class="row g-4 align-items-center">
                 <div class="col-lg-7">
                     <div class="glass rounded-4 p-4 p-lg-5 shadow-soft">
-                        <div class="d-flex flex-wrap gap-2 mb-3">
-                            <span class="badge badge-soft rounded-pill px-3 py-2">Bootstrap 5</span>
-                            <span class="badge badge-soft rounded-pill px-3 py-2">Una sola página</span>
-                            <span class="badge badge-soft rounded-pill px-3 py-2">Diseño moderno</span>
-                        </div>
-
-                        <h1 class="display-6 fw-bold mb-2">Biblioteca Digital</h1>
-
+                        <h1 class="display-6 fw-bold mb-4">Biblioteca Digital</h1>
+                        <p class="text-soft mb-4">Gestiona tus reservas y devoluciones en tiempo real.</p>
+                        
                         <div class="row g-2">
                             <div class="col-md-7">
-                                <input id="txtBuscar" class="form-control form-control-lg" type="text" placeholder="Buscar por título, autor o categoría...">
+                                <input id="txtBuscar" class="form-control form-control-lg" type="text" placeholder="Buscar título, autor o género...">
                             </div>
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Acciones
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregar" hidden>Agregar libro</a></li>
-                                <li><a class="dropdown-item" href="#catalogo">Ver catálogo</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Configuración</a></li>
-                            </ul>
-
                             <div class="col-md-5">
-                                
                                 <select id="selCategoria" class="form-select form-select-lg">
-                                    <option selected>Todas las categorías</option>
-                                    <option value="">Programación</option>
-                                    <option value="">Base de Datos</option>
-                                    <option value="">Redes</option>
-                                    <option value="">Matemáticas</option>
+                                    <option selected value="todas">Todas las categorías</option>
+                                    <option>Programación</option>
+                                    <option>Base de Datos</option>
+                                    <option>Algoritmos</option>
+                                    <option>Diseño Web</option>
                                 </select>
                             </div>
                             <div class="col-12 d-flex flex-wrap gap-2 mt-2">
-                                <button id="btnBuscar" class="btn btn-primary btn-lg px-4">Buscar</button>
+                                <button id="btnBuscar" class="btn btn-primary btn-lg px-4">Filtrar</button>
                                 <button id="btnLimpiar" class="btn btn-soft btn-lg px-4">Limpiar</button>
-                                <button class="btn btn-success btn-lg px-4" data-bs-toggle="modal" data-bs-target="#modalAgregar" hidden>Agregar</button>
                             </div>
-                        </div>
-
-                        <div class="divider my-4"></div>
-
-                        <div class="row text-center g-3">
-                            <div class="col-6">
-                                <div class="glass rounded-4 p-3">
-                                    <div class="fw-bold fs-4" id="statTotal">24</div>
-                                    <div class="text-soft small">Libros</div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="glass rounded-4 p-3">
-                                    <div class="fw-bold fs-4" id="statCategorias">6</div>
-                                    <div class="text-soft small">Categorías</div>
-                                </div>
-                            </div>
-                            
                         </div>
                     </div>
                 </div>
-
-                
             </div>
         </div>
     </header>
 
-    <!-- CATALOGO -->
     <main id="catalogo" class="pb-5">
         <div class="container">
-            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                <div>
-                    <h2 class="h4 fw-bold mb-1">Catálogo</h2>
-                    <p class="text-soft mb-0">Listado de libros (mock). Luego se conecta con tu JS.</p>
-                </div>
-
-                <div class="d-flex flex-wrap gap-2">
-                    <select id="selOrden" class="form-select" style="max-width: 220px;">
-                        <option value="reciente">Orden: más reciente</option>
-                        <option value="titulo">Orden: título (A-Z)</option>
-                        <option value="autor">Orden: autor (A-Z)</option>
-                        <option value="titulo">Orden: título (Z-A)</option>
-                        <option value="autor">Orden: autor (Z-A)</option>
-                    </select>
-                </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 fw-bold">Libros Disponibles</h2>
+                <span class="badge bg-primary rounded-pill">Catálogo General</span>
             </div>
-
+            
             <div class="row g-3" id="gridLibros">
-                <!-- Card 1 -->
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                    <div class="card glass border-0 rounded-4 h-100 card-hover">
-                        <div class="p-3">
-                            <div class="cover mb-3">
-                                <span>JS</span>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-start gap-2">
-                                <div>
-                                    <h5 class="card-title fw-bold mb-1">JavaScript Profesional</h5>
-                                    <div class="text-soft small">Nicholas C. Zakas</div>
-                                </div>
-                                <button class="btn btn-sm btn-soft" title="Favorito">★</button>
-                            </div>
-
-                            <div class="d-flex flex-wrap gap-2 my-3">
-                                <span class="badge badge-soft">Programación</span>
-                                <span class="badge badge-soft">Frontend</span>
-                            </div>
-
-                            <p class="text-soft small mb-3">
-                                Fundamentos, buenas prácticas y organización de código para proyectos reales.
-                            </p>
-
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalle">
-                                    Ver detalle
-                                </button>
-                                <button class="btn btn-soft">Descargar</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                    <div class="card glass border-0 rounded-4 h-100 card-hover">
-                        <div class="p-3">
-                            <div class="cover mb-3" style="background: linear-gradient(135deg, rgba(25,135,84,.35), rgba(13,202,240,.25));">
-                                <span>SQL</span>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-start gap-2">
-                                <div>
-                                    <h5 class="card-title fw-bold mb-1">Optimización en PostgreSQL</h5>
-                                    <div class="text-soft small">Guía práctica</div>
-                                </div>
-                                <button class="btn btn-sm btn-soft" title="Favorito">★</button>
-                            </div>
-
-                            <div class="d-flex flex-wrap gap-2 my-3">
-                                <span class="badge badge-soft">Base de Datos</span>
-                                <span class="badge badge-soft">Performance</span>
-                            </div>
-
-                            <p class="text-soft small mb-3">
-                                Índices, EXPLAIN, VACUUM y patrones de consultas eficientes.
-                            </p>
-
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalle">
-                                    Ver detalle
-                                </button>
-                                <button class="btn btn-soft">Descargar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                    <div class="card glass border-0 rounded-4 h-100 card-hover">
-                        <div class="p-3">
-                            <div class="cover mb-3" style="background: linear-gradient(135deg, rgba(255,193,7,.25), rgba(220,53,69,.22));">
-                                <span>WEB</span>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-start gap-2">
-                                <div>
-                                    <h5 class="card-title fw-bold mb-1">Bootstrap UI</h5>
-                                    <div class="text-soft small">Componentes & Layout</div>
-                                </div>
-                                <button class="btn btn-sm btn-soft" title="Favorito">★</button>
-                            </div>
-
-                            <div class="d-flex flex-wrap gap-2 my-3">
-                                <span class="badge badge-soft">Interfaz</span>
-                                <span class="badge badge-soft">Responsive</span>
-                            </div>
-
-                            <p class="text-soft small mb-3">
-                                Plantillas, grillas, formularios y patrones visuales para interfaces limpias.
-                            </p>
-
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalle">
-                                    Ver detalle
-                                </button>
-                                <button class="btn btn-soft">Descargar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                    <div class="card glass border-0 rounded-4 h-100 card-hover">
-                        <div class="p-3">
-                            <div class="cover mb-3" style="background: linear-gradient(135deg, rgba(13,202,240,.20), rgba(111,66,193,.28));">
-                                <span>ALG</span>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-start gap-2">
-                                <div>
-                                    <h5 class="card-title fw-bold mb-1">Estructuras de Datos</h5>
-                                    <div class="text-soft small">Notas y ejercicios</div>
-                                </div>
-                                <button class="btn btn-sm btn-soft" title="Favorito">★</button>
-                            </div>
-
-                            <div class="d-flex flex-wrap gap-2 my-3">
-                                <span class="badge badge-soft">Algoritmos</span>
-                                <span class="badge badge-soft">Universidad</span>
-                            </div>
-
-                            <p class="text-soft small mb-3">
-                                Listas, pilas, colas y árboles con ejemplos orientados a práctica académica.
-                            </p>
-
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalle">
-                                    Ver detalle
-                                </button>
-                                <button class="btn btn-soft">Descargar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CATEGORIAS -->
-            <section id="categorias" class="pt-4">
-                <div class="d-flex justify-content-between align-items-end gap-2 mb-3">
-                    <div>
-                        <h2 class="h4 fw-bold mb-1">Categorías</h2>
-                        <p class="text-soft mb-0">Atajos para filtrar el catálogo.</p>
-                    </div>
-                    <button class="btn btn-soft">Gestionar</button>
-                </div>
-
-                <div class="row g-3">
-                    <div class="col-12 col-md-6 col-xl-3">
-                        <div class="glass rounded-4 p-3 card-hover">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-bold">Programación</div>
-                                    <div class="text-soft small">Frontend, Backend</div>
-                                </div>
-                                <span class="badge badge-soft">8</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-xl-3">
-                        <div class="glass rounded-4 p-3 card-hover">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-bold">Base de Datos</div>
-                                    <div class="text-soft small">SQL, Modelado</div>
-                                </div>
-                                <span class="badge badge-soft">5</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-xl-3">
-                        <div class="glass rounded-4 p-3 card-hover">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-bold">Interfaz</div>
-                                    <div class="text-soft small">Bootstrap, UX</div>
-                                </div>
-                                <span class="badge badge-soft">4</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-xl-3">
-                        <div class="glass rounded-4 p-3 card-hover">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-bold">Algoritmos</div>
-                                    <div class="text-soft small">Estructuras</div>
-                                </div>
-                                <span class="badge badge-soft">7</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="py-4">
+    <section id="mis-prestamos" class="py-5 bg-dark bg-opacity-25">
         <div class="container">
-            <div class="glass rounded-4 p-3 p-lg-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
-                <div class="text-soft">
-                    © <span id="anio"></span> PRY Digital Library • Interfaz con Bootstrap
+            <h2 class="h4 fw-bold mb-4">Mis Libros Reservados</h2>
+            <div class="glass rounded-4 p-4">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Fecha Reserva</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acción</th> </tr>
+                        </thead>
+                        <tbody id="tablaPrestamos">
+                            </tbody>
+                    </table>
                 </div>
-                <div class="d-flex gap-2">
-                    <a class="btn btn-sm btn-soft" href="#inicio">Ir arriba</a>
-                    <button class="btn btn-sm btn-soft" data-bs-toggle="modal" data-bs-target="#modalLogin" hidden>Ingresar</button>
+                <div class="mt-3 text-end">
+                    <small class="text-soft">* Recuerda devolver los libros a tiempo para evitar sanciones.</small>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <footer class="py-4 text-center">
+        <div class="container text-soft">
+            <small>© 2026 PRY Digital Library - Evaluación Programación Web</small>
         </div>
     </footer>
 
-    <!-- MODAL DETALLE -->
-    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content glass text-white border-0 rounded-4">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold">Detalle del libro</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="cover">
-                                <span>JS</span>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <h4 class="fw-bold mb-1">JavaScript Profesional</h4>
-                            <div class="text-soft mb-2">Nicholas C. Zakas • Programación</div>
-
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <span class="badge badge-soft">Frontend</span>
-                                <span class="badge badge-soft">Buenas prácticas</span>
-                                <span class="badge badge-soft">ES6+</span>
-                            </div>
-
-                            <p class="text-soft mb-0">
-                                Descripción de ejemplo. Este modal se puede alimentar dinámicamente desde JavaScript
-                                cuando el usuario seleccione un libro específico.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer border-0">
-                    <button class="btn btn-soft" data-bs-dismiss="modal">Cerrar</button>
-                    <button class="btn btn-primary">Descargar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL AGREGAR -->
-    <div class="modal fade" id="modalAgregar" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass text-white border-0 rounded-4">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold">Agregar libro</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formAgregar" autocomplete="off">
-                        <div class="mb-3">
-                            <label class="form-label text-soft">Título</label>
-                            <input class="form-control" id="inpTitulo" placeholder="Ej: Clean Code" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-soft">Autor</label>
-                            <input class="form-control" id="inpAutor" placeholder="Ej: Robert C. Martin" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-soft">Categoría</label>
-                            <select class="form-select" id="inpCategoria" required>
-                                <option value="" selected disabled>Seleccione</option>
-                                <option>Programación</option>
-                                <option>Base de Datos</option>
-                                <option>Interfaz</option>
-                                <option>Algoritmos</option>
-                            </select>
-                        </div>
-                        <div class="mb-0">
-                            <label class="form-label text-soft">Descripción</label>
-                            <textarea class="form-control" id="inpDesc" rows="3" placeholder="Breve descripción..."></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer border-0">
-                    <button class="btn btn-soft" data-bs-dismiss="modal">Cancelar</button>
-                    <button class="btn btn-success" id="btnGuardarLibro">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL LOGIN
-    <div class="modal fade" id="modalLogin" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass text-white border-0 rounded-4">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold">Ingresar</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label text-soft">Correo</label>
-                        <input class="form-control" type="email" placeholder="correo@dominio.com">
-                    </div>
-                    <div class="mb-0">
-                        <label class="form-label text-soft">Contraseña</label>
-                        <input class="form-control" type="password" placeholder="••••••••">
-                    </div>
-                </div>
-                <div class="modal-footer border-0">
-                    <button class="btn btn-soft" data-bs-dismiss="modal">Cerrar</button>
-                    <button class="btn btn-primary">Entrar</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./public/js/controlador.js"></script>
 </body>
 </html>
