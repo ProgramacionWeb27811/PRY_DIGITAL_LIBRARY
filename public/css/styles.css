@@ -111,3 +111,32 @@ body {
     background-color: var(--select-bg);
     color: var(--select-text);
 }
+/* Estilos personalizados para paginación */
+
+.pagination-custom .page-link {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
+    /* transition: all 0.3s ease; */
+}
+
+.pagination-custom .page-link:hover:not(.disabled) {
+    background: rgba(13, 110, 253, 0.35);
+    border-color: rgba(13, 110, 253, 0.55);
+    color: rgba(255, 255, 255, 0.95);
+    transform: translateY(-2px);
+}
+
+.pagination-custom .page-item.active .page-link {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+}
+
+.pagination-custom .page-item.disabled .page-link {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.35);
+    cursor: not-allowed;
+}

@@ -1,31 +1,69 @@
 // const DB_URL = 'https://fdlrjsqrqtnpbgsjgohn.supabase.co/rest/v1/';
 
-document.getElementById("anio").textContent = new Date().getFullYear();
-
 const txtBuscar = document.getElementById("txtBuscar");
 const selectCategoria = document.getElementById("selectCategoria");
+const gridLibros = document.getElementById("gridLibros");
 
-document.getElementById("btnBuscar").addEventListener("click", () => {
-    const q = (txtBuscar.value || "").trim();
+let delayTime; // Para controlar el debounce
+
+// Función para mostrar spinner en el área de cards
+function mostrarSpinner() {
+    gridLibros.innerHTML = `
+        <div class="col-12 text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Buscando...</span>
+            </div>
+            <p class="text-soft mt-3">Buscando libros...</p>
+        </div>
+    `;
+}
+
+// Función para filtrar libros
+function filtrarLibros() {
+    const q = (txtBuscar.value || "").trim().toLowerCase();
     const cat = selectCategoria.value;
-    alert(`Buscar: "${q}" | Categoría: "${cat || "Todas"}"`);
+    
+    // Filtrar libros según búsqueda y categoría
+    let librosFiltrados = libros.filter(libro => {
+        const coincideTexto = !q || 
+            libro.titulo.toLowerCase().includes(q) || 
+            libro.autor.toLowerCase().includes(q) || 
+            libro.detalles.toLowerCase().includes(q);
+        
+        const coincideCategoria = cat === "todas" || libro.categoria === cat;
+        
+        return coincideTexto && coincideCategoria;
+    });
+    
+    // Reiniciar paginación y mostrar resultados filtrados
+    paginaActual = 1;
+    cargarCardsConFiltro(librosFiltrados);
+}
+
+// Debounce para el campo de búsqueda (3 segundos)
+txtBuscar.addEventListener("input", () => {
+    // Mostrar spinner en el área de cards
+    mostrarSpinner();
+    
+    // Limpiar timeout anterior
+    clearTimeout(delayTime);
+    
+    // Establecer nuevo timeout de 3 segundos
+    delayTime = setTimeout(() => {
+        filtrarLibros();
+    }, 3000);
 });
 
-document.getElementById("btnLimpiar").addEventListener("click", () => {
-    txtBuscar.value = "";
-    selectCategoria.value = "";
-    txtBuscar.focus();
+// Evento con delay para el select de categorías (3 segundos)
+selectCategoria.addEventListener("change", () => {
+    // Mostrar spinner en el área de cards
+    mostrarSpinner();
+    
+    // Limpiar timeout anterior
+    clearTimeout(delayTime);
+    
+    // Establecer nuevo timeout de 3 segundos
+    delayTime = setTimeout(() => {
+        filtrarLibros();
+    }, 3000);
 });
-
-document.getElementById("btnGuardarLibro").addEventListener("click", () => {
-    const t = document.getElementById("inpTitulo").value.trim();
-    const a = document.getElementById("inpAutor").value.trim();
-    const c = document.getElementById("inpCategoria").value;
-
-    if (!t || !a || !c) {
-        alert("Complete: Título, Autor y Categoría.");
-        return;
-    }
-
-    alert(`Libro guardado (demo): ${t} - ${a} [${c}]`);
-});  
