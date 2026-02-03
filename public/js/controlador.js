@@ -1,19 +1,19 @@
-const DB_URL = 'https://fdlrjsqrqtnpbgsjgohn.supabase.co/rest/v1/';
+// const DB_URL = 'https://fdlrjsqrqtnpbgsjgohn.supabase.co/rest/v1/';
 
 document.getElementById("anio").textContent = new Date().getFullYear();
 
 const txtBuscar = document.getElementById("txtBuscar");
-const selCategoria = document.getElementById("selCategoria");
+const selectCategoria = document.getElementById("selectCategoria");
 
 document.getElementById("btnBuscar").addEventListener("click", () => {
     const q = (txtBuscar.value || "").trim();
-    const cat = selCategoria.value;
+    const cat = selectCategoria.value;
     alert(`Buscar: "${q}" | Categoría: "${cat || "Todas"}"`);
 });
 
 document.getElementById("btnLimpiar").addEventListener("click", () => {
     txtBuscar.value = "";
-    selCategoria.value = "";
+    selectCategoria.value = "";
     txtBuscar.focus();
 });
 
