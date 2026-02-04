@@ -1,5 +1,3 @@
-// const DB_URL = 'https://fdlrjsqrqtnpbgsjgohn.supabase.co/rest/v1/';
-
 const txtBuscar = document.getElementById("txtBuscar");
 const selectCategoria = document.getElementById("selectCategoria");
 const gridLibros = document.getElementById("gridLibros");

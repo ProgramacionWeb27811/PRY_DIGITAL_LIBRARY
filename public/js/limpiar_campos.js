@@ -16,7 +16,7 @@ document.getElementById("btnLimpiar").addEventListener("click", () => {
     // Establecer nuevo timeout de 3 segundos
     delayTime = setTimeout(() => {
         paginaActual = 1;
-        librosActuales = [...libros]; // Reiniciar a todos los libros
+        librosActuales = agruparLibros(libros); // Reiniciar a todos los libros agrupados
         cargarCards(1);
         txtBuscar.focus();
     }, 3000);

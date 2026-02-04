@@ -1,6 +1,7 @@
-// Datos de los libros
+// Datos de los libros (con libro_id para diferenciar copias)
 const libros = [
     { 
+        libro_id: 'LIB001',
         titulo: 'JavaScript: The Good Parts', 
         autor: 'Douglas Crockford', 
         detalles: 'Una guía esencial para dominar JavaScript y evitar sus partes problemáticas.', 
@@ -8,6 +9,23 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB001-2',
+        titulo: 'JavaScript: The Good Parts', 
+        autor: 'Douglas Crockford', 
+        detalles: 'Una guía esencial para dominar JavaScript y evitar sus partes problemáticas.', 
+        categoria: 'Programación',
+        disponible: true
+    },
+    { 
+        libro_id: 'LIB001-3',
+        titulo: 'JavaScript: The Good Parts', 
+        autor: 'Douglas Crockford', 
+        detalles: 'Una guía esencial para dominar JavaScript y evitar sus partes problemáticas.', 
+        categoria: 'Programación',
+        disponible: true
+    },
+    { 
+        libro_id: 'LIB002',
         titulo: 'Diseño de Bases de Datos', 
         autor: 'Carlos Coronel', 
         detalles: 'Fundamentos y aplicaciones prácticas del diseño de bases de datos relacionales.', 
@@ -15,6 +33,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB003',
         titulo: 'Algoritmos en C++', 
         autor: 'Robert Sedgewick', 
         detalles: 'Implementación y análisis de algoritmos fundamentales en programación.', 
@@ -22,6 +41,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB004',
         titulo: 'HTML5 y CSS3', 
         autor: 'Jon Duckett', 
         detalles: 'Diseño y desarrollo web moderno con HTML5 y CSS3.', 
@@ -29,6 +49,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB005',
         titulo: 'Clean Code', 
         autor: 'Robert C. Martin', 
         detalles: 'Técnicas ágiles de desarrollo de software para escribir código limpio.', 
@@ -36,6 +57,15 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB005-2',
+        titulo: 'Clean Code', 
+        autor: 'Robert C. Martin', 
+        detalles: 'Técnicas ágiles de desarrollo de software para escribir código limpio.', 
+        categoria: 'Programación',
+        disponible: true
+    },
+    { 
+        libro_id: 'LIB006',
         titulo: 'SQL Avanzado', 
         autor: 'Joe Celko', 
         detalles: 'Técnicas avanzadas de SQL para desarrolladores profesionales.', 
@@ -43,6 +73,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB007',
         titulo: 'Estructuras de Datos', 
         autor: 'Mark Allen Weiss', 
         detalles: 'Teoría y práctica de estructuras de datos fundamentales.', 
@@ -50,6 +81,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB008',
         titulo: 'Python para Científicos', 
         autor: 'Alex DeCaria', 
         detalles: 'Aplicaciones de Python en computación científica y análisis de datos.', 
@@ -57,6 +89,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB009',
         titulo: 'Responsive Web Design', 
         autor: 'Ethan Marcotte', 
         detalles: 'Técnicas modernas para crear sitios web adaptativos y mobile-first.', 
@@ -64,6 +97,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB010',
         titulo: 'MongoDB: The Definitive Guide', 
         autor: 'Shannon Bradshaw', 
         detalles: 'Guía completa sobre bases de datos NoSQL con MongoDB.', 
@@ -71,6 +105,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB011',
         titulo: 'Introduction to Algorithms', 
         autor: 'Thomas H. Cormen', 
         detalles: 'Referencia académica sobre algoritmos clásicos y su complejidad.', 
@@ -78,6 +113,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB012',
         titulo: 'Vue.js 3 Guide', 
         autor: 'Evan You', 
         detalles: 'Desarrollo de aplicaciones web interactivas con Vue.js.', 
@@ -85,6 +121,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB013',
         titulo: 'Diseño UX/UI Moderno', 
         autor: 'Steve Krug', 
         detalles: 'Principios de usabilidad y diseño de interfaces de usuario.', 
@@ -92,6 +129,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB014',
         titulo: 'Administración de Servidores Linux', 
         autor: 'Evi Nemeth', 
         detalles: 'Gestión profesional de servidores Linux en entornos empresariales.', 
@@ -99,6 +137,7 @@ const libros = [
         disponible: true
     },
     { 
+        libro_id: 'LIB015',
         titulo: 'Data Science con Python', 
         autor: 'Jake VanderPlas', 
         detalles: 'Análisis y visualización de datos usando Python y librerías especializadas.', 
@@ -109,6 +148,42 @@ const libros = [
 
 // Datos de las categorías
 const categorias = ['Programación', 'Base de Datos', 'Algoritmos', 'Diseño Web'];
+
+// Función para agrupar libros por sus atributos principales
+// Agrupa libros con el mismo título, autor, categoría y detalles
+function agruparLibros(listaLibros) {
+    const libroAgrupados = {};
+    
+    listaLibros.forEach(libro => {
+        // Crear una clave única basada en los atributos principales
+        const clave = `${libro.titulo}|${libro.autor}|${libro.categoria}|${libro.detalles}`;
+        
+        if (!libroAgrupados[clave]) {
+            libroAgrupados[clave] = {
+                titulo: libro.titulo,
+                autor: libro.autor,
+                detalles: libro.detalles,
+                categoria: libro.categoria,
+                copias: [],
+                cantidadDisponible: 0
+            };
+        }
+        
+        // Agregar la copia con su libro_id
+        libroAgrupados[clave].copias.push({
+            libro_id: libro.libro_id,
+            disponible: libro.disponible
+        });
+        
+        // Contar disponibles
+        if (libro.disponible) {
+            libroAgrupados[clave].cantidadDisponible++;
+        }
+    });
+    
+    // Convertir a array
+    return Object.values(libroAgrupados);
+}
 
 // Función para cargar categorías en el select
 function cargarSelect() {
@@ -125,7 +200,7 @@ function cargarSelect() {
 // Variables de paginación
 let paginaActual = 1;
 const librosXPagina = 8;
-let librosActuales = [...libros]; // Para almacenar libros filtrados
+let librosActuales = []; // Para almacenar libros filtrados (agrupados)
 
 // Función para cargar libros como cards
 function cargarCards(pagina = 1) {
@@ -143,19 +218,26 @@ function cargarCards(pagina = 1) {
         return;
     }
     
-    librosPagina.forEach(libro => {
+    librosPagina.forEach((libro, index) => {
         const col = document.createElement('div');
         col.className = 'col-md-6 col-lg-3';
+        
+        const hayDisponibles = libro.cantidadDisponible > 0;
+        const botonDeshabilitado = hayDisponibles ? '' : 'disabled';
+        const claseBotón = hayDisponibles ? 'btn-primary' : 'btn-secondary';
         
         col.innerHTML = `
             <div class="glass rounded-3 p-3 h-100 shadow-soft">
                 <h5 class="fw-bold mb-2">${libro.titulo}</h5>
                 <p class="text-soft small mb-2">📝 ${libro.autor}</p>
                 <p class="small mb-3">${libro.detalles}</p>
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                     <span class="badge bg-primary">${libro.categoria}</span>
-                    <button class="btn btn-sm btn-primary">Reservar</button>
+                    <span class="badge bg-info text-dark">📚 ${libro.cantidadDisponible} disponibles</span>
                 </div>
+                <button class="btn btn-sm ${claseBotón} w-100" ${botonDeshabilitado}>
+                    ${hayDisponibles ? 'Reservar' : 'Sin disponibles'}
+                </button>
             </div>
         `;
         
@@ -168,7 +250,8 @@ function cargarCards(pagina = 1) {
 
 // Función para cargar libros con filtro (desde controlador.js)
 function cargarCardsConFiltro(librosFiltrados, pagina = 1) {
-    librosActuales = [...librosFiltrados];
+    // Agrupar los libros filtrados
+    librosActuales = agruparLibros(librosFiltrados);
     paginaActual = 1;
     cargarCards(pagina);
 }
@@ -225,5 +308,6 @@ function cambiarPagina(pagina) {
 // Cargar elementos al documento
 document.addEventListener('DOMContentLoaded', function() {
     cargarSelect();
+    librosActuales = agruparLibros(libros);  // Agrupar los libros iniciales
     cargarCards();
 });
