@@ -147,7 +147,13 @@ const libros = [
 ];
 
 // Datos de las categorías
-const categorias = ['Programación', 'Base de Datos', 'Algoritmos', 'Diseño Web'];
+const categorias = [];
+
+libros.forEach(libro => {
+    if (!categoriasDinamicas.includes(libro.categoria)) {
+        categoriasDinamicas.push(libro.categoria);
+    }
+});
 
 // Función para agrupar libros por sus atributos principales
 // Agrupa libros con el mismo título, autor, categoría y detalles
