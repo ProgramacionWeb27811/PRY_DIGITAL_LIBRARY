@@ -2,14 +2,37 @@
 
 // Array para almacenar las reservas
 let reservas = [];
+let libroPendiente = null;
+let modalDiasPrestamo = null;
 
 // Función para obtener la fecha actual en formato legible
 function obtenerFechaActual() {
-    const fecha = new Date();
+    return formatearFecha(new Date());
+}
+
+function formatearFecha(fecha) {
     const dia = String(fecha.getDate()).padStart(2, '0');
     const mes = String(fecha.getMonth() + 1).padStart(2, '0');
     const año = fecha.getFullYear();
     return `${dia}/${mes}/${año}`;
+}
+
+function calcularDiasRestantes(fechaReservaStr, diasPrestamo) {
+    const [dia, mes, año] = fechaReservaStr.split('/').map(Number);
+    const fechaReserva = new Date(año, mes - 1, dia);
+    const hoy = new Date();
+    const hoySinHora = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+    const reservaSinHora = new Date(fechaReserva.getFullYear(), fechaReserva.getMonth(), fechaReserva.getDate());
+    const diffMs = hoySinHora - reservaSinHora;
+    const diasTranscurridos = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    return diasPrestamo - diasTranscurridos;
+}
+
+function calcularFechaVencimiento(diasPrestamo) {
+    const hoy = new Date();
+    const fecha = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+    fecha.setDate(fecha.getDate() + diasPrestamo);
+    return fecha;
 }
 
 // Función para mostrar notificación (Toast)
@@ -42,7 +65,7 @@ function mostrarNotificacion(mensaje, tipo = 'success') {
 }
 
 // Función para reservar un libro
-function reservarLibro(libroAgrupado) {
+function reservarLibro(libroAgrupado, diasPrestamo) {
     // Buscar la primera copia disponible
     const copiaDisponible = libroAgrupado.copias.find(copia => copia.disponible);
     
@@ -68,6 +91,7 @@ function reservarLibro(libroAgrupado) {
         autor: libroAgrupado.autor,
         categoria: libroAgrupado.categoria,
         fechaReserva: obtenerFechaActual(),
+        diasPrestamo: diasPrestamo,
         estado: 'Reservado'
     };
     
@@ -109,7 +133,7 @@ function actualizarTablaReservas() {
     if (reservas.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center text-soft">No tienes libros reservados actualmente</td>
+                <td colspan="5" class="text-center text-soft">No tienes libros reservados actualmente</td>
             </tr>
         `;
         return;
@@ -117,6 +141,16 @@ function actualizarTablaReservas() {
     
     reservas.forEach((reserva, index) => {
         const tr = document.createElement('tr');
+        const diasRestantes = calcularDiasRestantes(reserva.fechaReserva, reserva.diasPrestamo);
+        let badgeColor = 'bg-success';
+        let diasTexto = `${diasRestantes} días`;
+
+        if (diasRestantes <= 0) {
+            badgeColor = 'bg-danger';
+            diasTexto = diasRestantes === 0 ? 'Vence hoy' : 'Vencido';
+        } else if (diasRestantes <= 3) {
+            badgeColor = 'bg-warning text-dark';
+        }
         
         tr.innerHTML = `
             <td>
@@ -129,6 +163,10 @@ function actualizarTablaReservas() {
             <td>${reserva.fechaReserva}</td>
             <td>
                 <span class="badge bg-success">${reserva.estado}</span>
+            </td>
+            <td>
+                <span class="badge ${badgeColor}">${diasTexto}</span>
+                <div class="small text-soft">de ${reserva.diasPrestamo} días</div>
             </td>
             <td class="text-center">
                 <button class="btn btn-sm btn-danger" onclick="devolverLibro(${index})">
@@ -178,6 +216,19 @@ function devolverLibro(indexReserva) {
 document.addEventListener('DOMContentLoaded', function() {
     // Actualizar la tabla al cargar la página
     actualizarTablaReservas();
+
+    const modalElemento = document.getElementById('modalDiasPrestamo');
+    modalDiasPrestamo = new bootstrap.Modal(modalElemento);
+    const rangeDiasPrestamo = document.getElementById('rangeDiasPrestamo');
+    const labelDiasPrestamo = document.getElementById('labelDiasPrestamo');
+    const textoVence = document.getElementById('textoVence');
+    const btnConfirmarReserva = document.getElementById('btnConfirmarReserva');
+
+    function actualizarPreviewPrestamo() {
+        const dias = Number(rangeDiasPrestamo.value);
+        labelDiasPrestamo.textContent = dias === 1 ? '1 día' : `${dias} días`;
+        textoVence.textContent = formatearFecha(calcularFechaVencimiento(dias));
+    }
     
     // Usar delegación de eventos en el contenedor de cards
     const gridLibros = document.getElementById('gridLibros');
@@ -198,8 +249,27 @@ document.addEventListener('DOMContentLoaded', function() {
             const libroSeleccionado = librosActuales[indiceReal];
             
             if (libroSeleccionado) {
-                reservarLibro(libroSeleccionado);
+                libroPendiente = libroSeleccionado;
+                rangeDiasPrestamo.value = '7';
+                actualizarPreviewPrestamo();
+                modalDiasPrestamo.show();
             }
         }
     });
+
+    rangeDiasPrestamo.addEventListener('input', actualizarPreviewPrestamo);
+
+    btnConfirmarReserva.addEventListener('click', function() {
+        if (!libroPendiente) {
+            modalDiasPrestamo.hide();
+            return;
+        }
+
+        const diasSeleccionados = Number(rangeDiasPrestamo.value);
+        reservarLibro(libroPendiente, diasSeleccionados);
+        libroPendiente = null;
+        modalDiasPrestamo.hide();
+    });
+
+    actualizarPreviewPrestamo();
 });
