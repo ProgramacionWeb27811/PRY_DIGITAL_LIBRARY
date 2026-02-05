@@ -89,6 +89,7 @@
                                 <th>Título</th>
                                 <th>Fecha Reserva</th>
                                 <th>Estado</th>
+                                <th>Días restantes</th>
                                 <th class="text-center">Acción</th> </tr>
                         </thead>
                         <tbody id="tablaPrestamos">
@@ -101,6 +102,46 @@
             </div>
         </div>
     </section>
+
+    <!--MODAL RESERVAS -->
+    <div class="modal fade" id="modalDiasPrestamo" tabindex="-1" aria-labelledby="modalDiasPrestamoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-glass text-white">
+                <div class="modal-header border-0 pb-0">
+                    <div>
+                        <h5 class="modal-title" id="modalDiasPrestamoLabel">Tiempo de préstamo</h5>
+                        <p class="text-soft small mb-0">Elige entre 1 y 14 días</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <span class="text-soft">Días seleccionados</span>
+                        <span class="badge bg-primary fs-6" id="labelDiasPrestamo">7 días</span>
+                    </div>
+                    <input type="range" class="form-range" id="rangeDiasPrestamo" min="1" max="14" step="1" value="7">
+                    <div class="d-flex justify-content-between text-soft small">
+                        <span>1</span>
+                        <span>14</span>
+                    </div>
+
+                    <div class="mt-3 p-3 rounded-3 bg-black bg-opacity-25 border border-light border-opacity-10">
+                        <div class="d-flex align-items-center gap-2">
+                            <span>🗓️</span>
+                            <div>
+                                <div class="small text-soft">Vence el</div>
+                                <div class="fw-semibold" id="textoVence">--/--/----</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmarReserva">Confirmar reserva</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="py-4 text-center">
         <div class="container text-soft">
