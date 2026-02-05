@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +10,7 @@
 </head>
 
 <body class="app-bg text-white">
-    
+
     <div class="toast-container position-fixed bottom-0 end-0 p-3" id="notificacionesContainer" style="z-index: 1055;">
     </div>
 
@@ -41,10 +42,11 @@
                     <div class="glass rounded-4 p-4 p-lg-5 shadow-soft">
                         <h1 class="display-6 fw-bold mb-4">Biblioteca Digital</h1>
                         <p class="text-soft mb-4">Gestiona tus reservas y devoluciones en tiempo real.</p>
-                        
+
                         <div class="row g-2">
                             <div class="col-md-7">
-                                <input id="txtBuscar" class="form-control form-control-lg" type="text" placeholder="Buscar por título, autor o categoría...">
+                                <input id="txtBuscar" class="form-control form-control-lg" type="text"
+                                    placeholder="Buscar por título, autor o categoría...">
                             </div>
                             <div class="col-md-5">
                                 <select id="selectCategoria" class="form-select form-select-lg">
@@ -68,9 +70,9 @@
                 <h2 class="h4 fw-bold">Libros Disponibles</h2>
                 <span class="badge bg-primary rounded-pill">Catálogo General</span>
             </div>
-            
+
             <div class="row g-3" id="gridLibros">
-                </div>
+            </div>
 
             <!-- Paginación -->
             <div class="mt-5" id="paginationContainer">
@@ -90,10 +92,11 @@
                                 <th>Fecha Reserva</th>
                                 <th>Estado</th>
                                 <th>Días restantes</th>
-                                <th class="text-center">Acción</th> </tr>
+                                <th class="text-center">Acción</th>
+                            </tr>
                         </thead>
                         <tbody id="tablaPrestamos">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
                 <div class="mt-3 text-end">
@@ -104,7 +107,8 @@
     </section>
 
     <!--MODAL RESERVAS -->
-    <div class="modal fade" id="modalDiasPrestamo" tabindex="-1" aria-labelledby="modalDiasPrestamoLabel" aria-hidden="true">
+    <div class="modal fade" id="modalDiasPrestamo" tabindex="-1" aria-labelledby="modalDiasPrestamoLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-glass text-white">
                 <div class="modal-header border-0 pb-0">
@@ -112,7 +116,8 @@
                         <h5 class="modal-title" id="modalDiasPrestamoLabel">Tiempo de préstamo</h5>
                         <p class="text-soft small mb-0">Elige entre 1 y 14 días</p>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="d-flex align-items-center justify-content-between mb-3">
@@ -143,6 +148,26 @@
         </div>
     </div>
 
+    <!--MODAL NOTIFICACION -->
+    <div class="modal fade" id="modalAvisoDiario" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-glass text-white border-warning">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-warning">⚠️ Resumen Diario</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div id="listaAvisos" class="d-flex flex-column gap-2"></div>
+
+                    <p class="small text-soft mt-3 mb-0 text-center">Este reporte se cerrará automáticamente...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <footer class="py-4 text-center">
         <div class="container text-soft">
             <small>© 2026 PRY Digital Library - Evaluación Programación Web</small>
@@ -154,5 +179,7 @@
     <script src="./public/js/cargar_elementos.js"></script>
     <script src="./public/js/limpiar_campos.js"></script>
     <script src="./public/js/reservar_libros.js"></script>
+    <script src="./public/js/alertas.js"></script>
 </body>
+
 </html>
