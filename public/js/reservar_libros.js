@@ -4,6 +4,9 @@
 let reservas = [];
 let libroPendiente = null;
 let modalDiasPrestamo = null;
+// Variables para confirmación
+let modalConfirmacion = null;
+let diasSeleccionadosTemp = 0;
 
 // Función para obtener la fecha actual en formato legible
 function obtenerFechaActual() {
@@ -219,10 +222,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const modalElemento = document.getElementById('modalDiasPrestamo');
     modalDiasPrestamo = new bootstrap.Modal(modalElemento);
+    
+    // Inicializar modal confirmación
+    const modalConfirmElemento = document.getElementById('modalConfirmacion');
+    modalConfirmacion = new bootstrap.Modal(modalConfirmElemento);
+
     const rangeDiasPrestamo = document.getElementById('rangeDiasPrestamo');
     const labelDiasPrestamo = document.getElementById('labelDiasPrestamo');
     const textoVence = document.getElementById('textoVence');
     const btnConfirmarReserva = document.getElementById('btnConfirmarReserva');
+    const btnFinalizarReserva = document.getElementById('btnFinalizarReserva');
 
     function actualizarPreviewPrestamo() {
         const dias = Number(rangeDiasPrestamo.value);
@@ -259,16 +268,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     rangeDiasPrestamo.addEventListener('input', actualizarPreviewPrestamo);
 
+    // Evento del primer modal: Abre el segundo modal
     btnConfirmarReserva.addEventListener('click', function() {
         if (!libroPendiente) {
             modalDiasPrestamo.hide();
             return;
         }
 
-        const diasSeleccionados = Number(rangeDiasPrestamo.value);
-        reservarLibro(libroPendiente, diasSeleccionados);
-        libroPendiente = null;
+        diasSeleccionadosTemp = Number(rangeDiasPrestamo.value);
+        
+        // Cargar datos en el modal de confirmación
+        document.getElementById('confirmaTitulo').textContent = libroPendiente.titulo;
+        document.getElementById('confirmaDias').textContent = diasSeleccionadosTemp === 1 ? '1 día' : `${diasSeleccionadosTemp} días`;
+
         modalDiasPrestamo.hide();
+        modalConfirmacion.show();
+    });
+
+    // Evento final: Ejecuta la reserva
+    btnFinalizarReserva.addEventListener('click', function() {
+        if (libroPendiente && diasSeleccionadosTemp > 0) {
+            reservarLibro(libroPendiente, diasSeleccionadosTemp);
+            libroPendiente = null;
+            diasSeleccionadosTemp = 0;
+            modalConfirmacion.hide();
+        }
     });
 
     actualizarPreviewPrestamo();
