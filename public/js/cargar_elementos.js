@@ -150,8 +150,8 @@ const libros = [
 const categorias = [];
 
 libros.forEach(libro => {
-    if (!categoriasDinamicas.includes(libro.categoria)) {
-        categoriasDinamicas.push(libro.categoria);
+    if (!categorias.includes(libro.categoria)) {
+        categorias.push(libro.categoria);
     }
 });
 
