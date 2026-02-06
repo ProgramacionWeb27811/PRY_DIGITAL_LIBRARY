@@ -100,7 +100,7 @@ header {
 
 /* Ajuste para el body para compensar el header fijo */
 body {
-    padding-top: 80px;
+    padding-top: 60px;
 }
 
 /* Variables opcionales para mantener consistencia con tu tema */
