@@ -1,14 +1,27 @@
 // reservar_libros.js - Sistema de reservas de libros
 
-// Array para almacenar las reservas
+// CLASE RESERVA (Programación Orientada a Objetos)
+
+class Reserva {
+    constructor(libroId, titulo, autor, categoria, diasPrestamo) {
+        this.libro_id = libroId;
+        this.titulo = titulo;
+        this.autor = autor;
+        this.categoria = categoria;
+        this.fechaReserva = obtenerFechaActual();
+        this.diasPrestamo = diasPrestamo;
+        this.estado = 'Reservado';
+    }
+}
+
+// Variables globales
 let reservas = [];
 let libroPendiente = null;
 let modalDiasPrestamo = null;
-// Variables para confirmación
 let modalConfirmacion = null;
 let diasSeleccionadosTemp = 0;
 
-// Función para obtener la fecha actual en formato legible
+// Funciones de manejo de fechas
 function obtenerFechaActual() {
     return formatearFecha(new Date());
 }
@@ -38,7 +51,7 @@ function calcularFechaVencimiento(diasPrestamo) {
     return fecha;
 }
 
-// Función para mostrar notificación (Toast)
+// Mostrar notificación toast
 function mostrarNotificacion(mensaje, tipo = 'success') {
     const contenedor = document.getElementById('notificacionesContainer');
     
@@ -61,74 +74,96 @@ function mostrarNotificacion(mensaje, tipo = 'success') {
     const toastBootstrap = new bootstrap.Toast(toast);
     toastBootstrap.show();
     
-    // Eliminar el toast del DOM después de ocultarse
     toast.addEventListener('hidden.bs.toast', () => {
         toast.remove();
     });
 }
 
-// Función para reservar un libro
-function reservarLibro(libroAgrupado, diasPrestamo) {
-    // Buscar la primera copia disponible
-    const copiaDisponible = libroAgrupado.copias.find(copia => copia.disponible);
+// FUNCIÓN ASÍNCRONA: Verificar disponibilidad con Promesas
+// Simula consulta al servidor con 3 segundos de espera
+async function verificarDisponibilidad(libroAgrupado) {
+    console.log('Verificando disponibilidad en el servidor');
     
-    if (!copiaDisponible) {
-        mostrarNotificacion('No hay copias disponibles de este libro', 'warning');
-        return;
+    if (typeof mostrarSpinner === 'function') {
+        mostrarSpinner();
     }
-    
-    // Verificar si el usuario ya tiene este libro reservado
-    const yaReservado = reservas.some(reserva => 
-        reserva.titulo === libroAgrupado.titulo && reserva.estado === 'Reservado'
-    );
-    
-    if (yaReservado) {
-        mostrarNotificacion('Ya tienes una copia de este libro reservada', 'info');
-        return;
-    }
-    
-    // Crear la reserva
-    const nuevaReserva = {
-        libro_id: copiaDisponible.libro_id,
-        titulo: libroAgrupado.titulo,
-        autor: libroAgrupado.autor,
-        categoria: libroAgrupado.categoria,
-        fechaReserva: obtenerFechaActual(),
-        diasPrestamo: diasPrestamo,
-        estado: 'Reservado'
-    };
-    
-    // Agregar a las reservas
-    reservas.push(nuevaReserva);
-    
-    // Marcar la copia como no disponible
-    copiaDisponible.disponible = false;
-    
-    // Actualizar la cantidad disponible en el libro agrupado
-    libroAgrupado.cantidadDisponible--;
-    
-    // Actualizar también en el array original de libros
-    const libroOriginal = libros.find(l => l.libro_id === copiaDisponible.libro_id);
-    if (libroOriginal) {
-        libroOriginal.disponible = false;
-    }
-    
-    // Actualizar la tabla de reservas
-    actualizarTablaReservas();
-    
-    // Recargar las cards para reflejar el cambio de disponibilidad
-    cargarCards(paginaActual);
-    
-    // Mostrar notificación de éxito
-    mostrarNotificacion(`"${libroAgrupado.titulo}" reservado exitosamente`, 'success');
-    
-    // Scroll a la sección de mis préstamos
-    setTimeout(() => {
-        document.getElementById('mis-prestamos').scrollIntoView({ behavior: 'smooth' });
-    }, 500);
+
+    // Promesa que simula latencia del servidor
+    let miPromesa = new Promise((resolver, rechazar) => {
+        setTimeout(() => {
+            let copiaEncontrada = null;
+            let yaReservado = false;
+            
+            // Buscar copia disponible usando find()
+            copiaEncontrada = libroAgrupado.copias.find(copia => copia.disponible);
+
+            // Verificar si ya tiene el libro reservado usando some()
+            yaReservado = reservas.some(reserva => 
+                reserva.titulo === libroAgrupado.titulo && reserva.estado === 'Reservado'
+            );
+
+            if (copiaEncontrada && !yaReservado) {
+                resolver(copiaEncontrada);
+            } else {
+                let mensajeError = 'No hay copias disponibles de este libro';
+                if (yaReservado) {
+                    mensajeError = 'Ya tienes una copia de este libro reservada';
+                }
+                rechazar(mensajeError);
+            }
+                
+        }, 3000); // 3 segundos de espera
+    });
+
+    return miPromesa;
 }
 
-// Función para actualizar la tabla de reservas
+// FUNCIÓN PRINCIPAL: Reservar libro (async/await)
+async function reservarLibro(libroAgrupado, diasPrestamo) {
+    
+    try {
+        // Await: espera a que la promesa se resuelva (3 segundos)
+        const copiaDisponible = await verificarDisponibilidad(libroAgrupado);
+
+        // Si la verificación fue exitosa, crear reserva usando la Clase
+        const nuevaReserva = new Reserva(
+            copiaDisponible.libro_id,
+            libroAgrupado.titulo,
+            libroAgrupado.autor,
+            libroAgrupado.categoria,
+            diasPrestamo
+        );
+        
+        // Agregar reserva al array usando push()
+        reservas.push(nuevaReserva);
+        
+        // Marcar copia como no disponible
+        copiaDisponible.disponible = false;
+        libroAgrupado.cantidadDisponible--;
+        
+        // Actualizar en el array original de libros
+        const libroOriginal = libros.find(l => l.libro_id === copiaDisponible.libro_id);
+        if (libroOriginal) {
+            libroOriginal.disponible = false;
+        }
+        
+        actualizarTablaReservas();
+        cargarCards(paginaActual);
+        mostrarNotificacion(`"${libroAgrupado.titulo}" reservado exitosamente`, 'success');
+        
+        setTimeout(() => {
+            document.getElementById('mis-prestamos').scrollIntoView({ behavior: 'smooth' });
+        }, 500);
+
+    } catch (error) {
+        // Si la promesa fue rechazada, mostrar error
+        console.error('Error en reserva:', error);
+        mostrarNotificacion(error, 'warning');
+        cargarCards(paginaActual);
+    }
+}
+
+// Actualizar tabla de reservas usando forEach()
 function actualizarTablaReservas() {
     const tbody = document.getElementById('tablaPrestamos');
     tbody.innerHTML = '';
@@ -182,17 +217,16 @@ function actualizarTablaReservas() {
     });
 }
 
-// Función para devolver un libro
+// Devolver libro usando splice() y find()
 function devolverLibro(indexReserva) {
     const reserva = reservas[indexReserva];
     
-    // Buscar la copia en el array de libros original y marcarla como disponible
+    // Marcar libro como disponible usando find()
     const libroOriginal = libros.find(l => l.libro_id === reserva.libro_id);
     if (libroOriginal) {
         libroOriginal.disponible = true;
     }
     
-    // Actualizar la disponibilidad en el libro agrupado
     const libroAgrupado = librosActuales.find(lg => lg.titulo === reserva.titulo);
     if (libroAgrupado) {
         const copia = libroAgrupado.copias.find(c => c.libro_id === reserva.libro_id);
@@ -202,28 +236,22 @@ function devolverLibro(indexReserva) {
         }
     }
     
-    // Eliminar la reserva
+    // Eliminar reserva usando splice()
     reservas.splice(indexReserva, 1);
     
-    // Actualizar la tabla
     actualizarTablaReservas();
-    
-    // Recargar las cards
     cargarCards(paginaActual);
-    
-    // Mostrar notificación
     mostrarNotificacion(`"${reserva.titulo}" devuelto correctamente`, 'info');
 }
 
-// Delegación de eventos para los botones de reservar
+
+// Delegación de eventos y manejo de modales
 document.addEventListener('DOMContentLoaded', function() {
-    // Actualizar la tabla al cargar la página
     actualizarTablaReservas();
 
     const modalElemento = document.getElementById('modalDiasPrestamo');
     modalDiasPrestamo = new bootstrap.Modal(modalElemento);
     
-    // Inicializar modal confirmación
     const modalConfirmElemento = document.getElementById('modalConfirmacion');
     modalConfirmacion = new bootstrap.Modal(modalConfirmElemento);
 
@@ -239,22 +267,18 @@ document.addEventListener('DOMContentLoaded', function() {
         textoVence.textContent = formatearFecha(calcularFechaVencimiento(dias));
     }
     
-    // Usar delegación de eventos en el contenedor de cards
+    // Delegación de eventos - un solo listener para todos los botones "Reservar"
     const gridLibros = document.getElementById('gridLibros');
     
     gridLibros.addEventListener('click', function(e) {
-        // Verificar si el click fue en un botón de reservar
         if (e.target.tagName === 'BUTTON' && e.target.textContent.trim() === 'Reservar') {
-            // Obtener el índice de la card
             const card = e.target.closest('.col-md-6');
             const todasLasCards = Array.from(gridLibros.querySelectorAll('.col-md-6'));
             const indiceCard = todasLasCards.indexOf(card);
             
-            // Calcular el índice real considerando la paginación
+            // Calcular índice real considerando paginación
             const inicio = (paginaActual - 1) * librosXPagina;
             const indiceReal = inicio + indiceCard;
-            
-            // Obtener el libro correspondiente
             const libroSeleccionado = librosActuales[indiceReal];
             
             if (libroSeleccionado) {
@@ -268,7 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     rangeDiasPrestamo.addEventListener('input', actualizarPreviewPrestamo);
 
-    // Evento del primer modal: Abre el segundo modal
     btnConfirmarReserva.addEventListener('click', function() {
         if (!libroPendiente) {
             modalDiasPrestamo.hide();
@@ -276,16 +299,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         diasSeleccionadosTemp = Number(rangeDiasPrestamo.value);
-        
-        // Cargar datos en el modal de confirmación
         document.getElementById('confirmaTitulo').textContent = libroPendiente.titulo;
-        document.getElementById('confirmaDias').textContent = diasSeleccionadosTemp === 1 ? '1 día' : `${diasSeleccionadosTemp} días`;
+        document.getElementById('confirmaDias').textContent = 
+            diasSeleccionadosTemp === 1 ? '1 día' : `${diasSeleccionadosTemp} días`;
 
         modalDiasPrestamo.hide();
         modalConfirmacion.show();
     });
 
-    // Evento final: Ejecuta la reserva
+    // Ejecuta la función async reservarLibro()
     btnFinalizarReserva.addEventListener('click', function() {
         if (libroPendiente && diasSeleccionadosTemp > 0) {
             reservarLibro(libroPendiente, diasSeleccionadosTemp);
