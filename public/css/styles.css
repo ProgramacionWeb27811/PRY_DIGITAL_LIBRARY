@@ -100,7 +100,7 @@ header {
 
 /* Ajuste para el body para compensar el header fijo */
 body {
-    padding-top: 60px;
+    padding-top: 80px;
 }
 
 /* Variables opcionales para mantener consistencia con tu tema */
@@ -168,4 +168,13 @@ body {
 
 .form-range {
     accent-color: #0d6efd;
+}
+
+/* Scroll suave y compensación del header fijo */
+html {
+    scroll-behavior: smooth;
+}
+
+section, main {
+    scroll-margin-top: 90px;
 }
